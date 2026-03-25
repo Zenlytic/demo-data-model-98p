@@ -391,3 +391,14 @@ fields:
   sql: COUNT(DISTINCT CASE WHEN ${order_lines.discount} > 5 THEN ${order_lines.order_id}
     END) / NULLIF(COUNT(DISTINCT ${order_lines.order_id}), 0)
   canon_date: order_lines.order
+
+- name: repurchase_rate_yvntcgye
+  field_type: measure
+  type: number
+  label: Repurchase Rate
+  description: Repurchase Rate shows the percentage of orders that come from returning
+    (repeat) customers.
+  value_format_name: percent_2
+  sql: COUNT(DISTINCT CASE WHEN ${order_lines.new_vs_repeat} = 'Repeat' THEN ${order_lines.order_id}
+    END) / NULLIF(COUNT(DISTINCT ${order_lines.order_id}), 0)
+  canon_date: order_lines.order
