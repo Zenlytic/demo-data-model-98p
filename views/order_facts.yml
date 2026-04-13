@@ -32,8 +32,6 @@ fields:
     type: string
     searchable: true
     sql: ${TABLE}.product_title
-    synonyms:
-      - magic dimension
 
   - name: product_type
     field_type: dimension
