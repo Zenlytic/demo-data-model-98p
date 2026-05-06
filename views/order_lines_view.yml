@@ -399,7 +399,7 @@ fields:
   - name: magic_metric
     field_type: measure
     type: number
-    label: Magic Metric
+    label: Revenue Per Unit
     description: >-
       Revenue per unit = total gross revenue / total units sold. Measures the
       average realized revenue for each unit sold. Can be broken down by
@@ -407,5 +407,5 @@ fields:
     value_format_name: usd
     sql: ${total_gross_revenue} / NULLIF(${number_of_units}, 0)
     synonyms:
-      - revenue per unit
       - magic metric
+      - revenue per unit
