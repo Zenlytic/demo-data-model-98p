@@ -382,6 +382,42 @@ fields:
       SUM(ORDER_LINES.COGS)) / SUM(${order_lines.revenue}) END
     canon_date: order_lines.order
 
+  - name: bargain_rate
+    field_type: measure
+    type: number
+    label: Bargain Rate
+    description: >-
+      Bargain rate = total discounts / gross revenue. Measures the share of
+      revenue given back as discounts.
+    value_format_name: percent_2
+    sql: ${total_discounts} / NULLIF(${total_gross_revenue}, 0)
+    synonyms:
+      - discount rate
+      - bargain rate
+
+  - name: gross_margin_pct
+    field_type: measure
+    type: number
+    label: Gross Margin %
+    description: >-
+      Gross margin % = (revenue - discounts - COGS) / revenue. Measures the
+      percentage of revenue retained after discounts and cost of goods sold.
+    value_format_name: percent_2
+    sql: ${gross_profit} / NULLIF(${total_gross_revenue}, 0)
+
+  - name: customer_ltv
+    field_type: measure
+    type: number
+    label: Customer LTV
+    description: >-
+      Customer lifetime value = total gross revenue / distinct customers.
+      Measures the average revenue generated per customer across all orders.
+    value_format_name: usd
+    sql: ${total_gross_revenue} / NULLIF(${number_of_customers_with_orders}, 0)
+    synonyms:
+      - lifetime value
+      - ltv
+
   - name: repurchase_rate_yvntcgye
     field_type: measure
     type: number
