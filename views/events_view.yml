@@ -271,4 +271,20 @@ fields:
     can't identify)
   value_format_name: decimal_0
   sql: ${anonymous_id}
+
+- name: site_to_purchase_conversion_rate
+  field_type: measure
+  type: number
+  label: Site-to-Purchase Conversion Rate
+  description: >-
+    Share of site sessions that result in a completed purchase
+    (EVENT_NAME = 'Complete Purchase').
+  value_format_name: percent_2
+  sql: >-
+    COUNT(DISTINCT CASE WHEN ${TABLE}.EVENT_NAME = 'Complete Purchase' THEN
+    ${TABLE}.SESSION_ID END) / NULLIF(COUNT(DISTINCT ${TABLE}.SESSION_ID), 0)
+  synonyms:
+    - Session Conversion Rate
+    - Purchase Conversion Rate
+    - Site Conversion Rate
 event_dimension: event_name

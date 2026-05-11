@@ -135,6 +135,11 @@ fields:
   sql: >-
     SUM(${gross_profit_from_paid_marketing}) /
     nullif(${total_marketing_spend}, 0)
+  synonyms:
+    - Profitable ROAS
+    - Profit on Ad Spend
+    - Gross Profit ROAS
+    - Profitable Return on Ad Spend
 
 - name: total_gross_profit_edplouup
   field_type: measure

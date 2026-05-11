@@ -396,3 +396,51 @@ fields:
       ${order_lines.order_id}), 0)
     canon_date: order_lines.order
 
+  - name: subscription_revenue_mix
+    field_type: measure
+    type: number
+    label: Subscription Revenue Mix
+    description: >-
+      The percentage of total gross revenue coming from subscriptions.
+    value_format_name: percent_1
+    sql: >-
+      SUM(CASE WHEN ${TABLE}.SUBSCRIPTION_VS_OTP = 'Subscription' THEN
+      ${TABLE}.REVENUE END) / NULLIF(SUM(${TABLE}.REVENUE), 0)
+    synonyms:
+      - Subscription Rate
+      - Recurring Revenue Share
+      - Sub Revenue %
+
+  - name: new_customer_acquisition_rate
+    field_type: measure
+    type: number
+    label: New Customer Acquisition Rate
+    description: >-
+      Share of ordering customers who are brand new in a given period.
+      Calculated as new customers / total customers with orders.
+    value_format_name: percent_1
+    sql: >-
+      COUNT(DISTINCT CASE WHEN ${TABLE}.new_vs_repeat = 'New' THEN
+      ${TABLE}.CUSTOMER_ID END) / NULLIF(COUNT(DISTINCT ${TABLE}.CUSTOMER_ID), 0)
+    synonyms:
+      - New Customer Rate
+      - First-Time Buyer Rate
+      - New Buyer Share
+
+  - name: revenue_per_new_customer
+    field_type: measure
+    type: number
+    label: Revenue per New Customer
+    description: >-
+      Average gross revenue generated per new customer. Use with a channel
+      dimension to analyze by acquisition channel.
+    value_format_name: usd
+    sql: >-
+      SUM(CASE WHEN ${TABLE}.new_vs_repeat = 'New' THEN ${TABLE}.REVENUE END) /
+      NULLIF(COUNT(DISTINCT CASE WHEN ${TABLE}.new_vs_repeat = 'New' THEN
+      ${TABLE}.CUSTOMER_ID END), 0)
+    synonyms:
+      - New Customer Revenue per Head
+      - Avg New Customer Value
+      - New Buyer AOV
+
