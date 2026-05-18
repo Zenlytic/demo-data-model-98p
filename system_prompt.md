@@ -9,3 +9,8 @@ Examples:
 - "Month to date" → 1st of the current month through yesterday
 - "Quarter to date" → 1st of the current quarter through yesterday
 - "Year to date" → January 1st of the current year through yesterday
+
+
+## Business Terminology
+
+- **"Magic metric"** — When Billy (on the marketing team) refers to the "magic metric," he means **ROAS** (Return on Ad Spend).
