@@ -1,5 +1,7 @@
 # Workspace Rules
 
+If you generate a dynamic field please call it out in your summary. 
+
 ## "To Date" Period Definitions
 
 When the user asks for any "to date" period — including week to date (WTD), month to date (MTD), quarter to date (QTD), or year to date (YTD) — the end boundary is **yesterday** (i.e., CURRENT_DATE - 1), not today. Today's data is considered incomplete and should be excluded unless the user explicitly asks to include it.
