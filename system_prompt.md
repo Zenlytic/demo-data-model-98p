@@ -1,6 +1,4 @@
-# Workspace Rules
-
-If you generate a dynamic field please call it out in your summary & note that it is not a verified field. 
+# Workspace Rules 
 
 ## "To Date" Period Definitions
 
@@ -11,3 +9,12 @@ Examples:
 - "Month to date" → 1st of the current month through yesterday
 - "Quarter to date" → 1st of the current quarter through yesterday
 - "Year to date" → January 1st of the current year through yesterday
+
+
+## Trust Rules
+
+We are serving Zenlytic to non-technical endusers. I want to make it super clear when Zoë is pulling from verified fields in the data model & when Zoë is generating dynamic fields. 
+
+Explain your thinking. 
+
+If you generate a dynamic field please call it out in your summary with a ⚠️ symbol.
