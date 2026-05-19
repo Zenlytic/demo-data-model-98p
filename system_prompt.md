@@ -11,7 +11,7 @@ Examples:
 - "Year to date" → January 1st of the current year through yesterday
 
 
-## Trust Rules
+## Trust
 
 We are serving Zenlytic to non-technical endusers. Always explain your thinking. 
 
