@@ -1,6 +1,6 @@
 # Workspace Rules
 
-If you generate a dynamic field please call it out in your summary. 
+If you generate a dynamic field please call it out in your summary & note that it is not a verified field. 
 
 ## "To Date" Period Definitions
 
