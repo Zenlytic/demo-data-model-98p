@@ -1,72 +1,60 @@
 ---
-name: style-guide
-description: Your brand style guide for all visual outputs. Used when creating PowerPoints,
-  PDFs, charts, apps, and other visual artifacts.
+name: custom-guide
+description: Use when creating visual outputs that should follow the workspace's custom brand guide and bundled brand assets.
 enabled: true
-migrated_from_database: true
-migrated_skill_id: workspace-skill-GSBayQtcSaKn1kzURigstg
-migrated_at: '2026-05-07T11:18:08.062377Z'
 assets:
-- file_name: Screenshot_2026-03-03_at_12.59.05_PM.png
-  name: "Screenshot 2026-03-03 at 12.59.05\u202FPM"
-  description: ''
-  file_type: image/png
-  file_size: 72121
-- file_name: Zenlytic_Logo_Black_1200.png
-  name: Zenlytic_Logo_Black_1200
-  description: ''
-  file_type: image/png
-  file_size: 79963
-- file_name: Zenlytic_Logo_White_Transparent_1200.png
-  name: Zenlytic_Logo_White_Transparent_1200
-  description: ''
-  file_type: image/png
-  file_size: 77302
+- file_name: Archive.zip
+  name: Archive
+  description: Zip archive containing the custom guide assets that should be extracted before use.
+  file_type: application/zip
 ---
 
-# Your Brand Style Guide
+# Custom Guide
 
-This guide defines your visual identity for all outputs created by Zoë.
+Use this skill when you need the workspace's custom branding, logos, screenshots, or other bundled visual assets.
 
-Zenlytic Color Palette
+## Required asset workflow
 
-Primary Colors
-NameHex CodeUsageForest Green#09493DPrimary buttons, headers, key accentsLight Green#7CB77FHover states, secondary highlightsCharcoal#454547Subheadings, secondary text, bordersBlack#000000Primary text, high contrast elementsCream#F7F3E8Page backgrounds, cards, light surfacesWarm White#FAF4DFAlternate backgrounds, subtle fills
-Data Visualization Colors
-Use these colors in order for charts and graphs:
+Before using any asset from this skill, first extract `/data_model/skills/custom-guide/assets/Archive.zip` into a temporary working directory.
 
-#09493D (Forest Green — primary series)
-#7CB77F (Light Green — secondary series)
-#454547 (Charcoal — tertiary series)
-#FAF4DF (Warm White — light fill / area charts)
-#000000 (Black — emphasis / outliers)
+Use a workflow like:
 
-Background & Surface Colors
-ContextHex CodePrimary background#F7F3E8Card / panel surface#FAF4DFDark surface / sidebar#000000Border / divider#454547
-Text Colors
-ContextHex CodePrimary text#000000Secondary text#454547Text on dark backgrounds#F7F3E8Accent / link text#09493D
-Typography
+```bash
+mkdir -p /mnt/data/tmp/custom-guide-assets
+python3 << 'EOF'
+import zipfile
+src = '/data_model/skills/custom-guide/assets/Archive.zip'
+dst = '/mnt/data/tmp/custom-guide-assets'
+with zipfile.ZipFile(src) as z:
+    members = [m for m in z.namelist() if not m.startswith('__MACOSX/') and not m.endswith('/')]
+    z.extractall(dst, members)
+print('Extracted', len(members), 'files to', dst)
+EOF
+```
 
-Headlines: Bold sans-serif, #000000 on light, #F7F3E8 on dark
-Body Text: Regular sans-serif, 14-16px, #454547
-Data Values: Medium weight, #09493D for positive, #454547 for neutral
+After extraction:
+- Use the extracted files from `/mnt/data/tmp/custom-guide-assets/`
+- Ignore `__MACOSX` entries and other archive metadata files
+- Inspect the extracted files before deciding which ones to use
+- Re-extract the archive whenever a fresh sandbox session may not already contain the unpacked files
 
-## Design Principles
+## Current expected assets
 
-- Keep designs clean and professional
-- Use white space generously
-- Maintain consistent alignment
-- Ensure sufficient color contrast for readability
+At the time this skill was updated, `Archive.zip` contains these primary files:
+- `Screenshot_2026-03-03_at_12.59.05_PM.png`
+- `Zenlytic_Logo_Black_1200.png`
+- `Zenlytic_Logo_White_Transparent_1200.png`
 
-## PowerPoint Slides
-- Use dark backgrounds with light text
-- Keep one main idea per slide
-- Use large, clear fonts (24pt minimum for body text)
+Do not assume those are the only files forever; treat the zip archive as the source of truth.
 
-## Charts & Graphs
-- Always include clear titles and labels
-- Use the color palette above in order
-- Include legends when showing multiple data series
+## Usage guidance
 
----
-*Edit this template to match your brand guidelines*
+- Use the screenshot as visual brand reference material when matching look and feel
+- Use the black logo on light backgrounds
+- Use the white transparent logo on dark backgrounds
+- Prefer the extracted assets over recreating logos manually
+
+## Notes
+
+- The archive is the canonical packaged asset source for this skill
+- If you need to reference a file in an artifact workflow, extract first, then use the extracted copy from `/mnt/data/tmp/custom-guide-assets/`
