@@ -123,6 +123,9 @@ fields:
     spend across all channels
   value_format_name: decimal_1
   sql: SUM(${revenue_from_paid_marketing}) / nullif(${total_marketing_spend}, 0)
+  synonyms:
+    - Magic Metric
+    - Return on Ad Spend
 
 - name: proas
   field_type: measure
