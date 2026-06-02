@@ -264,6 +264,9 @@ fields:
     sql: ${number_of_repeat_orders} / ${number_of_orders}
     synonyms:
       - Repeat order rate
+      - Repurchase Rate
+      - Repeat Rate
+      - Retention Rate
 
   - name: gross_aov
     field_type: measure
@@ -283,6 +286,10 @@ fields:
     value_format_name: usd
     sql: ${total_net_revenue} - ${total_cogs}
     zoe_description: This is the gross profit.
+    synonyms:
+      - Gross Profit
+      - Profit
+      - Net Profit after COGS
 
   - name: units_per_order
     field_type: measure
@@ -381,6 +388,13 @@ fields:
       ((SUM(${order_lines.revenue}) - SUM(${order_lines.discount})) -
       SUM(ORDER_LINES.COGS)) / SUM(${order_lines.revenue}) END
     canon_date: order_lines.order
+    synonyms:
+      - Net Margin
+      - Profit Margin
+      - Profit Margin Percentage
+      - Profit Margin Percent
+      - Margin %
+      - Net Profitability
 
   - name: repurchase_rate_yvntcgye
     field_type: measure
@@ -443,4 +457,38 @@ fields:
       - New Customer Revenue per Head
       - Avg New Customer Value
       - New Buyer AOV
+
+  - name: number_of_repeat_customers
+    field_type: measure
+    type: count_distinct
+    label: Repeat Customers
+    description: >-
+      The unique number of customers who placed a repeat (non-first) order.
+      A customer is counted as repeat when new_vs_repeat = 'Repeat'.
+    value_format_name: decimal_0
+    sql: ${customer_id}
+    filters:
+      - field: new_vs_repeat
+        value: Repeat
+    synonyms:
+      - Repeat Customers
+      - Returning Customers
+      - Loyal Customers
+      - Repeat Buyers
+
+  - name: discount_rate
+    field_type: measure
+    type: number
+    label: Discount Rate
+    description: >-
+      Discount rate = total discounts / total gross revenue. Represents the
+      share of revenue given away as discounts.
+    value_format_name: percent_1
+    sql: >-
+      SUM(${order_lines.discount}) / NULLIF(SUM(${order_lines.revenue}), 0)
+    synonyms:
+      - Discount Rate
+      - Discount %
+      - Discount Percentage
+      - Promo Rate
 
