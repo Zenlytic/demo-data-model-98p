@@ -476,19 +476,3 @@ fields:
       - Loyal Customers
       - Repeat Buyers
 
-  - name: discount_rate
-    field_type: measure
-    type: number
-    label: Discount Rate
-    description: >-
-      Discount rate = total discounts / total gross revenue. Represents the
-      share of revenue given away as discounts.
-    value_format_name: percent_1
-    sql: >-
-      SUM(${order_lines.discount}) / NULLIF(SUM(${order_lines.revenue}), 0)
-    synonyms:
-      - Discount Rate
-      - Discount %
-      - Discount Percentage
-      - Promo Rate
-
