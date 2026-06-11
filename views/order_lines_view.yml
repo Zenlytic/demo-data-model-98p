@@ -458,6 +458,20 @@ fields:
       - Avg New Customer Value
       - New Buyer AOV
 
+  - name: discount_rate
+    field_type: measure
+    type: number
+    label: Discount Rate
+    description: >-
+      The percentage of gross revenue given back as discounts.
+      Calculated as total discounts / total gross revenue.
+    value_format_name: percent_2
+    sql: ${total_discounts} / NULLIF(${total_gross_revenue}, 0)
+    synonyms:
+      - Bargain Rate
+      - Discount Percentage
+      - Discount %
+
   - name: number_of_repeat_customers
     field_type: measure
     type: count_distinct
