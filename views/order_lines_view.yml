@@ -211,6 +211,21 @@ fields:
     value_format_name: usd
     sql: ${discount}
 
+  - name: discount_rate
+    field_type: measure
+    type: number
+    hidden: false
+    label: Discount Rate
+    description: >-
+      The percentage of gross revenue given back as discounts.
+      Calculated as total discounts / total gross revenue.
+    value_format_name: percent_2
+    sql: SUM(${discount}) / NULLIF(SUM(${revenue}), 0)
+    synonyms:
+      - Bargain Rate
+      - Discount Percentage
+      - Discount %
+
   - name: number_of_customers_with_orders
     field_type: measure
     type: count_distinct
