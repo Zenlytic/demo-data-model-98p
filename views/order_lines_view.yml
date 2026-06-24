@@ -468,9 +468,25 @@ fields:
     value_format_name: percent_2
     sql: ${total_discounts} / NULLIF(${total_gross_revenue}, 0)
     synonyms:
-      - Bargain Rate
       - Discount Percentage
       - Discount %
+
+  - name: bargain_rate
+    field_type: measure
+    type: number
+    label: Bargain Rate
+    description: >-
+      The percentage of orders where the total discount applied exceeds $5.
+      Calculated as the number of distinct orders with a discount > $5 divided
+      by the total number of distinct orders.
+    value_format_name: percent_2
+    sql: >-
+      COUNT(DISTINCT CASE WHEN ${TABLE}.DISCOUNT > 5 THEN ${TABLE}.ORDER_ID END) /
+      NULLIF(COUNT(DISTINCT ${TABLE}.ORDER_ID), 0)
+    synonyms:
+      - Bargain Rate
+      - Discount Order Rate
+      - Orders with Discount
 
   - name: number_of_repeat_customers
     field_type: measure
