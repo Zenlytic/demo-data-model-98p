@@ -198,17 +198,6 @@ fields:
   sql: ${TABLE}.EVENT_NAME
   searchable: true
 
-- name: event_sequence
-  field_type: dimension
-  type: number
-  description: The sequence of events user took on the site
-  value_format_name: decimal_0
-  sql: >-
-    case when ${event_name} = 'Visit Website' then 1 when ${event_name} =
-    'View Product' then 2 when ${event_name} = 'Read Blog' then 3 when
-    ${event_name} = 'Cart' then 4 when ${event_name} = 'Complete Purchase'
-    then 5 when ${event_name} = 'Subscribe' then 6 end
-
 - name: page_url_path
   field_type: dimension
   type: string
@@ -246,45 +235,4 @@ fields:
   - week_of_year
   - month_of_year
   sql: ${TABLE}.EVENT_TIMESTAMP
-
-- name: number_of_events
-  field_type: measure
-  type: count
-  description: The number of events from interaction with the site
-  value_format_name: decimal_0
-  sql: ${anonymous_id}
-
-- name: number_of_sessions
-  field_type: measure
-  type: count_distinct
-  description: >-
-    The number of sessions (usage of the site by a unique user in a 6 hour
-    window)
-  value_format_name: decimal_0
-  sql: ${session_id}
-
-- name: number_of_users
-  field_type: measure
-  type: count_distinct
-  description: >-
-    The number of site users (including people who are not logged in / we
-    can't identify)
-  value_format_name: decimal_0
-  sql: ${anonymous_id}
-
-- name: site_to_purchase_conversion_rate
-  field_type: measure
-  type: number
-  label: Site-to-Purchase Conversion Rate
-  description: >-
-    Share of site sessions that result in a completed purchase
-    (EVENT_NAME = 'Complete Purchase').
-  value_format_name: percent_2
-  sql: >-
-    COUNT(DISTINCT CASE WHEN ${TABLE}.EVENT_NAME = 'Complete Purchase' THEN
-    ${TABLE}.SESSION_ID END) / NULLIF(COUNT(DISTINCT ${TABLE}.SESSION_ID), 0)
-  synonyms:
-    - Session Conversion Rate
-    - Purchase Conversion Rate
-    - Site Conversion Rate
 event_dimension: event_name
