@@ -85,6 +85,34 @@ fields:
   sql: ${TABLE}.spend_at
 
 
+- name: total_revenue_from_paid_marketing
+  field_type: measure
+  type: sum
+  label: Total Revenue
+  description: >-
+    Total revenue generated from paid marketing channels. Sum of revenue
+    attributed to paid marketing spend.
+  value_format_name: usd
+  sql: ${revenue_from_paid_marketing}
+  synonyms:
+  - Total Revenue
+  - Paid Marketing Revenue
+  - Revenue from Paid Marketing
+  - Paid Revenue
+
+- name: paid_customers
+  field_type: measure
+  type: sum
+  label: Paid Customers
+  description: >-
+    Total number of customers acquired through paid marketing channels.
+  value_format_name: decimal_0
+  sql: ${customers_from_paid_marketing}
+  synonyms:
+  - Paid Customers
+  - Customers from Paid Marketing
+  - Acquired Customers
+
 - name: total_marketing_spend
   field_type: measure
   type: sum
@@ -124,8 +152,8 @@ fields:
   value_format_name: decimal_1
   sql: SUM(${revenue_from_paid_marketing}) / nullif(${total_marketing_spend}, 0)
   synonyms:
-    - Magic Metric
-    - Return on Ad Spend
+  - Magic Metric
+  - Return on Ad Spend
 
 - name: proas
   field_type: measure
@@ -139,38 +167,10 @@ fields:
     SUM(${gross_profit_from_paid_marketing}) /
     nullif(${total_marketing_spend}, 0)
   synonyms:
-    - Profitable ROAS
-    - Profit on Ad Spend
-    - Gross Profit ROAS
-    - Profitable Return on Ad Spend
-
-- name: total_revenue_from_paid_marketing
-  field_type: measure
-  type: sum
-  label: Total Revenue
-  description: >-
-    Total revenue generated from paid marketing channels. Sum of revenue
-    attributed to paid marketing spend.
-  value_format_name: usd
-  sql: ${revenue_from_paid_marketing}
-  synonyms:
-    - Total Revenue
-    - Paid Marketing Revenue
-    - Revenue from Paid Marketing
-    - Paid Revenue
-
-- name: paid_customers
-  field_type: measure
-  type: sum
-  label: Paid Customers
-  description: >-
-    Total number of customers acquired through paid marketing channels.
-  value_format_name: decimal_0
-  sql: ${customers_from_paid_marketing}
-  synonyms:
-    - Paid Customers
-    - Customers from Paid Marketing
-    - Acquired Customers
+  - Profitable ROAS
+  - Profit on Ad Spend
+  - Gross Profit ROAS
+  - Profitable Return on Ad Spend
 
 - name: total_gross_profit_edplouup
   field_type: measure
