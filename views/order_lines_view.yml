@@ -518,16 +518,3 @@ fields:
   - Orders with Discount Over $5
   - Bargain Hunter Rate
 
-
-- name: jul_1_13_revenue_jjvywhaa
-  field_type: measure
-  type: sum
-  label: Jul 1 13 Revenue
-  description: Total revenue from orders placed between July 1 and July 13, 2026.
-  value_format_name: usd_2
-  sql: CASE WHEN ${order_lines.order_raw} < '2026-07-14' AND ${order_lines.order_raw}
-    >= '2026-07-01' THEN ${order_lines.revenue} ELSE 0 END
-  synonyms:
-  - sales
-  - revenue
-  canon_date: order_lines.order
