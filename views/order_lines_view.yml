@@ -166,17 +166,6 @@ fields:
   sql: dense_rank() over (partition by ${customer_id} order by ${order_date} asc)
   window: true
 
-- name: order_total_discount
-  field_type: dimension
-  type: number
-  hidden: true
-  description: >-
-    The total discount applied across all order lines within a single
-    order. Used to power order-level discount threshold metrics like
-    bargain rate.
-  sql: SUM(${discount}) OVER (PARTITION BY ${order_id})
-  window: true
-
 - name: order
   field_type: dimension_group
   type: time
@@ -498,23 +487,4 @@ fields:
   - Returning Customers
   - Loyal Customers
   - Repeat Buyers
-
-- name: bargain_rate
-  field_type: measure
-  type: number
-  label: Bargain Rate
-  description: >-
-    The percentage of orders where the total discount applied across the
-    order exceeds $5. Calculated as the count of orders with an
-    order-level discount greater than $5, divided by the total number of
-    orders.
-  value_format_name: percent_1
-  sql: >-
-    COUNT(DISTINCT CASE WHEN ${order_total_discount} > 5 THEN ${order_id}
-    END) / NULLIF(COUNT(DISTINCT ${order_id}), 0)
-  canon_date: order_lines.order
-  synonyms:
-  - Discount Threshold Rate
-  - Orders with Discount Over $5
-  - Bargain Hunter Rate
 
