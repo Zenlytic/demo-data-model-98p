@@ -254,6 +254,23 @@ fields:
   value_format_name: usd
   sql: ${total_gross_revenue} - ${total_discounts}
 
+- name: danilos_sales_metric
+  field_type: measure
+  type: number
+  hidden: false
+  label: Danilo's Sales Metric
+  description: >-
+    Danilo's sales metric, defined by Danilo as total gross revenue times 1.2.
+  zoe_description: >-
+    Custom metric requested by Danilo. Formula: total gross revenue * 1.2.
+    Not a standard finance metric (not GAAP revenue) -- only use this when a
+    user explicitly asks for "Danilo's sales metric" or "Danilo's metric".
+  value_format_name: usd
+  sql: ${total_gross_revenue} * 1.2
+  synonyms:
+  - Danilo's sales metric
+  - Danilo's metric
+
 - name: repurchase_rate
   field_type: measure
   type: number
