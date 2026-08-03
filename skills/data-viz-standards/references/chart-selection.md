@@ -1,6 +1,6 @@
 # Chart Selection: Intent × Data Matrix
 
-Selection is driven by intent first, data shape second, aesthetics last. Kirk's framing: editorial thinking ("what do I want people to see?") precedes chart choice. Ware's constraint: encode the primary quantity on the most accurate perceptual channel available (position > length > slope > angle > area > color intensity).
+Selection is driven by intent first, data shape second, aesthetics last. Editorial thinking ("what do I want people to see?") precedes chart choice. Perceptual constraint: encode the primary quantity on the most accurate perceptual channel available (position > length > slope > angle > area > color intensity).
 
 ## 1. Comparison (compare values across categories)
 
@@ -61,7 +61,7 @@ Sorted horizontal bar is the default. For rank *changes* over time: bump chart (
 | Data shape | Best choice | Notes |
 |---|---|---|
 | Sequential conversion (funnel intent) | Ordered bar/funnel with explicit drop-off % between stages | Label the drop, not just the stage totals; the drop is the story. |
-| Many-to-many flows | Sankey | Emphasize one flow path in color, gray the rest (WSJ pattern). |
+| Many-to-many flows | Sankey | Emphasize one flow path in color, gray the rest. |
 | State transitions / journeys | Sankey or chord (chord only for expert audiences) | |
 | Process/system logic (not quantities) | Flow diagram / node-link | This is a diagram, not a chart: layout left-to-right or top-to-bottom, one visual grammar for node types. |
 
@@ -78,7 +78,7 @@ Sorted horizontal bar is the default. For rank *changes* over time: bump chart (
 Add interactivity only when it serves the intent:
 - **Tooltips**: always fine as detail-on-demand; never the only place the key value appears.
 - **Filters/toggles**: for exploratory dashboards where the audience legitimately needs different slices. Default state must show the most important slice.
-- **Drill-down**: overview first, zoom and filter, then details on demand (Shneiderman). The overview must stand alone.
+- **Drill-down**: overview first, zoom and filter, then details on demand. The overview must stand alone.
 - **Animation**: only for transitions that preserve object constancy (e.g. sorting a bar chart) or time playback where change itself is the story. Never decorative.
 - Skip interactivity entirely when the artifact will be screenshotted, pasted into slides, or emailed; make the static frame carry everything.
 

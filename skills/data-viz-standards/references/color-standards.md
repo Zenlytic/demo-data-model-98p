@@ -1,7 +1,5 @@
 # Color Standards
 
-Sources: Datawrapper ("A detailed guide to colors in data vis style guides", "10 ways to use fewer colors"), Amy Cesal (Nightingale), Mode ("How to use your brand's color palette"), Ware (perception), Knaflic (strategic use of color).
-
 Core doctrine: **color is for meaning, not decoration.** Gray is the default state of everything; saturated color is spent only on what the viewer must see first. A chart where everything is colored highlights nothing.
 
 ## 1. Deriving a palette from a user-specified base color
@@ -9,8 +7,8 @@ Core doctrine: **color is for meaning, not decoration.** Gray is the default sta
 When the user asks for a visualization "in blue", "using our brand green #1A7F5C", etc., generate the palette with this procedure:
 
 ### Step A - Adjust the base for chart use
-Brand colors are designed for logos, not charts (Cesal). Test the base:
-- Too saturated/bright for large areas (bars, areas, map fills)? Darken slightly and reduce saturation for the "large area" variant. Keep a more saturated variant for thin marks (lines, dots, small points) — colors read as less intense at small sizes, so small marks may use higher saturation than fills (FT/538 pattern). The viewer should perceive both variants as "the same color".
+Brand colors are designed for logos, not charts. Test the base:
+- Too saturated/bright for large areas (bars, areas, map fills)? Darken slightly and reduce saturation for the "large area" variant. Keep a more saturated variant for thin marks (lines, dots, small points). Colors read as less intense at small sizes, so small marks may use higher saturation than fills. The viewer should perceive both variants as "the same color".
 - Too light to meet ~3:1 contrast on white? Darken until it does.
 
 ### Step B - Build shades of the base
@@ -19,20 +17,20 @@ Create 2 lighter and 2 darker steps (roughly equal lightness increments, ~12-15 
 ### Step C - Add companion hues (only as many as needed)
 If the chart needs more than one hue, pick companions that:
 - sit at **clearly different lightness levels** than the base (grayscale test),
-- share the base's "vibe" (temperature and saturation level: a muted base gets muted companions, a vivid base gets vivid ones — Bloomberg/Mailchimp principle),
+- share the base's "vibe" (temperature and saturation level: a muted base gets muted companions, a vivid base gets vivid ones),
 - avoid red-green as the only distinction,
 - are nameable colors (blue, orange, teal, purple...), which helps when people present or discuss the chart.
 Practical default: base + a hue roughly opposite in temperature (blue base → orange/amber companion; green base → purple/magenta; red base → blue/teal). Third and fourth hues fill remaining lightness slots.
-Reserve the exact base/brand color for the most important category or single-series charts (finn.no / New American Economy pattern); companion hues carry the rest.
+Reserve the exact base/brand color for the most important category or single-series charts; companion hues carry the rest.
 
 ### Step D - Grays matched to the base
-Define at least: a data-gray (de-emphasized series, "Other", missing data) and 3 UI grays (gridlines lightest, axis labels mid, titles darkest). Tint the grays toward the base's temperature: warm base → warm grays (Economist), cool base → cool/silver grays (McKinsey). Keep saturation low enough that gray never reads as a category.
+Define at least: a data-gray (de-emphasized series, "Other", missing data) and 3 UI grays (gridlines lightest, axis labels mid, titles darkest). Tint the grays toward the base's temperature: warm base → warm grays, cool base → cool/silver grays. Keep saturation low enough that gray never reads as a category.
 
 ### Step E - Sequential gradient from the base
 For heatmaps/choropleths: interpolate from a very light tint (~95% lightness) to the darkest usable version of the base. Requirements:
-- Total lightness range ≥60 percentage points (Datawrapper default gradients average ~69).
+- Total lightness range ≥60 percentage points (well-designed reference gradients average ~69).
 - If the base hue can't be dark while staying saturated (yellows, light greens, magentas), **shift the hue at the dark end** toward a neighbor that can (yellow-green → green; magenta → purple/blue). A subtle hue shift also improves discriminability.
-- Steps must be perceptually even; work in Lch/Lab-like terms, not naive RGB interpolation (Mode).
+- Steps must be perceptually even; work in Lch/Lab-like terms, not naive RGB interpolation.
 
 ### Step F - Diverging gradient
 Two sequential scales glued at a light neutral midpoint. One side is the base; the other side is a hue-opposed companion at matched lightness/saturation. Center on the meaningful midpoint (0, target, average) - never let the neutral drift off the semantic middle.
@@ -51,8 +49,6 @@ Grays: data-gray `#9CA3AF`; gridlines `#E5E7EB`; axis labels `#6B7280`; titles/v
 Sequential default: `#EFF6FF` → `#1E3A8A`. Diverging default: `#B45309` ↔ `#F5F5F4` ↔ `#1D4ED8` (orange-blue, colorblind-safe; use red-blue only when negative/positive semantics demand red).
 Background: white or near-white; all palette colors are tuned for light backgrounds. For dark backgrounds, raise lightness and saturation of each hue and invert the gray ramp.
 
-Note: on Zenlytic artifacts (charts, dashboards, presentations), the workspace `style-guide` skill's palette (Forest Green `#3D5A47`, Butter `#E8DDB5`, Sage `#5A7A62`, etc.) is the base/brand color set and takes precedence over this generic default — treat Forest Green as the "base color" and apply the derivation procedure in Section 1 when a richer palette is needed than the style guide's fixed table provides.
-
 ## 3. Fixed semantic colors (override everything)
 
 - Negative / decline / alert: red family. Positive / growth: green family, or blue when paired against red (colorblind-safe pairing).
@@ -64,7 +60,7 @@ Note: on Zenlytic artifacts (charts, dashboards, presentations), the workspace `
 
 ## 4. The fewer-colors checklist (run before adding any hue beyond the second)
 
-From Datawrapper's "10 ways", in order of preference:
+In order of preference:
 1. Does the chart work with a single color? (Bars separated by position don't need per-bar colors. Charts with one series get exactly one color.)
 2. Shades of one hue instead of new hues? (Shifts focus to totals over parts - use only when that's correct.)
 3. Emphasize 1-3 key categories in color, gray the rest? (Best default for "so what"-driven charts.)

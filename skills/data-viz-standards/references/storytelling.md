@@ -1,8 +1,6 @@
 # Storytelling and Layout Standards
 
-Source: Knaflic (Storytelling with Data), Kirk (editorial thinking), Ware (attention/preattentive processing).
-
-## 1. Context before pixels (Knaflic's "understand the context")
+## 1. Context before pixels
 
 For every deliverable, be able to state:
 - **Audience**: who exactly, and how much time will they give this?
@@ -59,7 +57,7 @@ Rules:
 
 ## 7. Interactive storytelling patterns
 
-- **Overview → filter → detail** (Shneiderman): default view is the whole story; interaction narrows.
+- **Overview → filter → detail**: default view is the whole story; interaction narrows.
 - Default states are editorial choices: the filter defaults must show the most important segment, the sort default must match the analytical question.
 - Guided exploration: for complex interactives, add 2-3 preset "views" (buttons that set filters to the interesting states) so non-analysts reach the insights.
 - Every interactive state should be shareable/screenshottable and still self-explanatory (state reflected in the title/subtitle).
