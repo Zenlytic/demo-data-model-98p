@@ -196,10 +196,16 @@ fields:
   description: >-
     Total gross revenue = revenue from product sales + shipping revenues. In
     USD.
+  zoe_description: >-
+    Do not default to this field for a vague/generic "sales" question -- use
+    total_net_revenue as the default "sales" metric instead, since that is
+    what business and marketing stakeholders usually mean by "sales." Only
+    use total_gross_revenue when the user explicitly asks for gross revenue,
+    gross sales, or revenue before discounts, or when they ask a question
+    where multiple revenue cuts are relevant and gross is one of them.
   value_format_name: usd
   sql: ${revenue}
   synonyms:
-  - sales
   - revenue
 
 - name: total_discounts
@@ -251,8 +257,22 @@ fields:
   type: number
   hidden: false
   description: Total net revenue = gross revenue - discounts
+  zoe_description: >-
+    This is the default field to use whenever a user asks a generic "sales"
+    question (e.g. "show me sales by product," "what were our sales last
+    month") without specifying gross vs. net, especially in marketing
+    contexts -- business and marketing stakeholders mean total_net_revenue
+    when they say "sales." If the question could plausibly mean gross
+    revenue, net revenue, number of orders, or another metric (e.g. it names
+    more than one of these, or the phrasing suggests they might want a
+    different cut), do not guess: briefly state the relevant field
+    definitions (total_net_revenue = gross revenue - discounts;
+    total_gross_revenue = product + shipping revenue before discounts) and
+    ask which one they want before running the query.
   value_format_name: usd
   sql: ${total_gross_revenue} - ${total_discounts}
+  synonyms:
+  - sales
 
 - name: danilos_sales_metric
   field_type: measure
