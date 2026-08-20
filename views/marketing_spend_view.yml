@@ -135,10 +135,20 @@ fields:
 - name: cpc
   field_type: measure
   type: number
-  label: CPC
+  label: CPC (broken - do not use)
+  hidden: true
   description: >-
-    Cost oer click = Total marketing spend across all channels / number of
-    clicks through ads
+    BROKEN: intended to be Cost per click = total marketing spend / number
+    of clicks through ads, but there is no clicks column in the warehouse
+    marketing_spend table. The denominator is currently a hardcoded constant
+    (1,304,000), so this field does not represent real cost-per-click data.
+    Hidden until a real clicks source is added to the model.
+  zoe_description: >-
+    Do not use or reference this field. It divides total marketing spend by
+    a hardcoded number, not real click data, because no clicks column
+    exists in the warehouse. If a user asks for CPC or cost per click, tell
+    them this metric is not currently trackable in the data model rather
+    than using this field.
   value_format_name: usd
   sql: ${total_marketing_spend} / 1304000
 

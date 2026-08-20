@@ -398,7 +398,7 @@ fields:
   value_format_name: decimal_1
   sql: ${products.count_products} / ${number_of_orders}
 
-- name: avg_discount_per_order_nqdgetzc
+- name: avg_discount_per_order
   field_type: measure
   type: number
   label: Avg Discount Per Order
@@ -435,10 +435,18 @@ fields:
 - name: repurchase_rate_yvntcgye
   field_type: measure
   type: number
-  label: Repurchase Rate
+  label: Repurchase Rate (duplicate - do not use)
+  hidden: true
   description: >-
-    Repurchase Rate shows the percentage of orders that come from returning
-    (repeat) customers.
+    Duplicate of repurchase_rate (identical logic: number of repeat orders /
+    number of orders). Kept only for backward compatibility with existing
+    saved content that references this field id. Use repurchase_rate instead
+    for all new work.
+  zoe_description: >-
+    Do not use this field for new questions -- it is a duplicate of
+    repurchase_rate with identical logic. Always use repurchase_rate instead.
+    This field is hidden and retained only so it does not break old saved
+    queries/dashboards that reference it.
   value_format_name: percent_2
   sql: >-
     COUNT(DISTINCT CASE WHEN ${order_lines.new_vs_repeat} = 'Repeat' THEN

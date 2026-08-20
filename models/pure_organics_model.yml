@@ -9,11 +9,34 @@ access_grants:
   allowed_values:
   - Executive
   - Finance
+relationships:
+  - from_table: order_lines
+    join_table: products
+    relationship: many_to_one
+    join_type: left_outer
+    sql_on: ${order_lines.product_id} = ${products.product_id}
+  - from_table: order_lines
+    join_table: customers
+    relationship: many_to_one
+    join_type: left_outer
+    sql_on: ${order_lines.customer_id} = ${customers.customer_id}
+  - from_table: customers
+    join_table: order_lines
+    relationship: one_to_many
+    join_type: left_outer
+    sql_on: ${customers.customer_id} = ${order_lines.customer_id}
+  - from_table: events
+    join_table: customers
+    relationship: many_to_one
+    join_type: left_outer
+    sql_on: CAST(${events.customer_id} AS NUMBER) = ${customers.customer_id}
 mappings:
   marketing_channel:
     fields:
     - order_lines.marketing_channel
     - marketing_spend.channel
+    - events.marketing_channel
+    - customers.first_marketing_group
     description: >-
       The marketing channel that the customer came through before placing their
       order.
@@ -22,6 +45,7 @@ mappings:
     fields:
     - order_lines.marketing_source
     - marketing_spend.source
+    - events.utm_source
     description: >-
       The marketing source that the customer came through before placing their
       order.
@@ -30,6 +54,8 @@ mappings:
     fields:
     - order_lines.campaign
     - marketing_spend.campaign
+    - events.utm_campaign
+    - customers.first_campaign
     description: >-
       The marketing campaign that the customer came through before placing their
       order.
