@@ -166,6 +166,25 @@ fields:
   sql: dense_rank() over (partition by ${customer_id} order by ${order_date} asc)
   window: true
 
+- name: order_total_discount
+  field_type: dimension
+  type: number
+  hidden: true
+  description: >-
+    The total discount applied across all order lines within a single order
+    (order-level discount, summed across every line on that order).
+  sql: SUM(${TABLE}.DISCOUNT) OVER (PARTITION BY ${TABLE}.ORDER_ID)
+  window: true
+
+- name: is_bargain_order
+  field_type: dimension
+  type: yesno
+  hidden: true
+  description: >-
+    Whether the order is a "bargain order", meaning the order's total
+    discount (summed across all its order lines) is greater than $4.70.
+  sql: ${order_total_discount} > 4.70
+
 - name: order
   field_type: dimension_group
   type: time
@@ -196,6 +215,8 @@ fields:
   description: >-
     Total gross revenue = revenue from product sales + shipping revenues. In
     USD.
+  value_format_name: usd
+  sql: ${revenue}
   zoe_description: >-
     Do not default to this field for a vague/generic "sales" question -- use
     total_net_revenue as the default "sales" metric instead, since that is
@@ -203,8 +224,6 @@ fields:
     use total_gross_revenue when the user explicitly asks for gross revenue,
     gross sales, or revenue before discounts, or when they ask a question
     where multiple revenue cuts are relevant and gross is one of them.
-  value_format_name: usd
-  sql: ${revenue}
   synonyms:
   - revenue
 
@@ -257,6 +276,8 @@ fields:
   type: number
   hidden: false
   description: Total net revenue = gross revenue - discounts
+  value_format_name: usd
+  sql: ${total_gross_revenue} - ${total_discounts}
   zoe_description: >-
     This is the default field to use whenever a user asks a generic "sales"
     question (e.g. "show me sales by product," "what were our sales last
@@ -269,8 +290,6 @@ fields:
     definitions (total_net_revenue = gross revenue - discounts;
     total_gross_revenue = product + shipping revenue before discounts) and
     ask which one they want before running the query.
-  value_format_name: usd
-  sql: ${total_gross_revenue} - ${total_discounts}
   synonyms:
   - sales
 
@@ -281,12 +300,12 @@ fields:
   label: Danilo's Sales Metric
   description: >-
     Danilo's sales metric, defined by Danilo as total gross revenue times 1.2.
+  value_format_name: usd
+  sql: ${total_gross_revenue} * 1.2
   zoe_description: >-
     Custom metric requested by Danilo. Formula: total gross revenue * 1.2.
     Not a standard finance metric (not GAAP revenue) -- only use this when a
     user explicitly asks for "Danilo's sales metric" or "Danilo's metric".
-  value_format_name: usd
-  sql: ${total_gross_revenue} * 1.2
   synonyms:
   - Danilo's sales metric
   - Danilo's metric
@@ -507,25 +526,6 @@ fields:
   - Discount Percentage
   - Discount %
 
-- name: order_total_discount
-  field_type: dimension
-  type: number
-  hidden: true
-  description: >-
-    The total discount applied across all order lines within a single order
-    (order-level discount, summed across every line on that order).
-  sql: SUM(${TABLE}.DISCOUNT) OVER (PARTITION BY ${TABLE}.ORDER_ID)
-  window: true
-
-- name: is_bargain_order
-  field_type: dimension
-  type: yesno
-  hidden: true
-  description: >-
-    Whether the order is a "bargain order", meaning the order's total
-    discount (summed across all its order lines) is greater than $4.70.
-  sql: ${order_total_discount} > 4.70
-
 - name: number_of_bargain_orders
   field_type: measure
   type: count_distinct
@@ -559,3 +559,14 @@ fields:
   - Loyal Customers
   - Repeat Buyers
 
+
+- name: net_aov_0afdb261
+  field_type: measure
+  type: number
+  label: Net Aov
+  description: Net average order value, calculated as total revenue minus discounts
+    divided by the number of distinct orders, shown as a monetary amount per order.
+  value_format_name: decimal_2
+  sql: (SUM(${order_lines.revenue}) - SUM(${order_lines.discount})) / NULLIF(COUNT(DISTINCT
+    ${order_lines.order_id}), 0)
+  canon_date: order_lines.order
