@@ -73,6 +73,8 @@ fields:
   field_type: measure
   type: sum
   sql: ${TABLE}.total_cogs
+  required_access_grants:
+  - pii_access
 
 - name: ywuuqbnwwufratcmzdatbrajnnmtzbkeylvpdnbl
   field_type: measure

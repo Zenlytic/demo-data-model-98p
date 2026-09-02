@@ -270,6 +270,8 @@ fields:
   description: The allocated cost of goods sold to the order line
   value_format_name: usd
   sql: ${TABLE}.cogs
+  required_access_grants:
+  - pii_access
 
 - name: total_net_revenue
   field_type: measure
