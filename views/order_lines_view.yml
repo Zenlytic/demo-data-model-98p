@@ -526,20 +526,6 @@ fields:
   - Discount Percentage
   - Discount %
 
-- name: number_of_bargain_orders
-  field_type: measure
-  type: count_distinct
-  label: Bargain Orders
-  description: >-
-    The unique number of orders where the total discount applied to the
-    order is greater than $4.70.
-  value_format_name: decimal_0
-  sql: ${order_id}
-  filters:
-  - field: is_bargain_order
-    value: 'TRUE'
-  synonyms:
-  - Bargain Orders
 
 - name: number_of_repeat_customers
   field_type: measure
