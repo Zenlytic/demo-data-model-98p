@@ -1,0 +1,93 @@
+version: 1
+type: view
+name: csv_sharing_test
+model_name: pure_organics
+label: CSV Sharing Test Orders
+description: Small demo order dataset (6 orders) sourced from csv-sharing-test.csv. Each row is one order with customer, region, product, units, unit price and revenue in USD.
+zoe_description: Demo dataset built from the csv-sharing-test.csv file in the repository. One row per order_id. Not related to the pure_organics order_lines/products/customers views, so do not join it to them. Use total_revenue_usd for revenue and total_units for units sold.
+default_date: order
+derived_table:
+  sql: >
+    SELECT * FROM (VALUES
+        (1001, TO_DATE('2026-10-01'), 'Acme Demo', 'West', 'Notebook', 3, 12.00, 36.00),
+        (1002, TO_DATE('2026-10-02'), 'Beacon Demo', 'East', 'Pen', 10, 1.50, 15.00),
+        (1003, TO_DATE('2026-10-03'), 'Acme Demo', 'West', 'Pen', 5, 1.50, 7.50),
+        (1004, TO_DATE('2026-10-04'), 'Cedar Demo', 'South', 'Notebook', 2, 12.00, 24.00),
+        (1005, TO_DATE('2026-10-05'), 'Beacon Demo', 'East', 'Folder', 4, 4.25, 17.00),
+        (1006, TO_DATE('2026-10-06'), 'Cedar Demo', 'South', 'Pen', 8, 1.50, 12.00)
+    ) AS t(order_id, order_date, customer, region, product, units, unit_price_usd, revenue_usd)
+fields:
+- name: order_id
+  field_type: dimension
+  type: number
+  primary_key: true
+  hidden: true
+  searchable: false
+  description: Unique order identifier.
+  sql: ${TABLE}.order_id
+
+- name: order
+  field_type: dimension_group
+  type: time
+  datatype: date
+  timeframes: [raw, date, week, month, quarter, year]
+  description: Date the order was placed.
+  sql: ${TABLE}.order_date
+
+- name: customer
+  field_type: dimension
+  type: string
+  searchable: true
+  description: Customer name.
+  sql: ${TABLE}.customer
+
+- name: region
+  field_type: dimension
+  type: string
+  searchable: true
+  description: Sales region of the order (West, East, South).
+  sql: ${TABLE}.region
+
+- name: product
+  field_type: dimension
+  type: string
+  searchable: true
+  description: Product sold (Notebook, Pen, Folder).
+  sql: ${TABLE}.product
+
+- name: unit_price_usd
+  field_type: dimension
+  type: number
+  searchable: false
+  description: Price per unit in USD.
+  sql: ${TABLE}.unit_price_usd
+
+- name: count_orders
+  field_type: measure
+  type: count_distinct
+  label: Order count
+  description: Number of distinct orders.
+  sql: ${order_id}
+
+- name: total_units
+  field_type: measure
+  type: sum
+  label: Total units
+  description: Total units sold.
+  sql: ${TABLE}.units
+
+- name: total_revenue_usd
+  field_type: measure
+  type: sum
+  label: Total revenue (USD)
+  description: Sum of order revenue in USD (units x unit price).
+  value_format_name: usd
+  sql: ${TABLE}.revenue_usd
+
+- name: avg_order_value_usd
+  field_type: measure
+  type: number
+  label: Average order value (USD)
+  description: Total revenue divided by number of orders.
+  value_format_name: usd
+  sql: SUM(${TABLE}.revenue_usd) / NULLIF(COUNT(DISTINCT ${order_id}), 0)
