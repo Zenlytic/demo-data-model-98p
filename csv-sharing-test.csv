@@ -1,0 +1,7 @@
+order_id,order_date,customer,region,product,units,unit_price_usd,revenue_usd
+1001,2026-10-01,Acme Demo,West,Notebook,3,12.00,36.00
+1002,2026-10-02,Beacon Demo,East,Pen,10,1.50,15.00
+1003,2026-10-03,Acme Demo,West,Pen,5,1.50,7.50
+1004,2026-10-04,Cedar Demo,South,Notebook,2,12.00,24.00
+1005,2026-10-05,Beacon Demo,East,Folder,4,4.25,17.00
+1006,2026-10-06,Cedar Demo,South,Pen,8,1.50,12.00
