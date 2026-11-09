@@ -513,6 +513,28 @@ fields:
   - Avg New Customer Value
   - New Buyer AOV
 
+- name: bargain_rate
+  field_type: measure
+  type: number
+  label: Bargain Rate
+  description: >-
+    The percentage of orders where the total discount on the order (summed
+    across all of its order lines) is greater than $5. Calculated as orders
+    with a total discount over $5 / total orders.
+  zoe_description: >-
+    Order-level metric: an order counts as a bargain when its total discount
+    across all lines exceeds $5 (strictly greater than). Use with a dimension
+    such as marketing_channel to see how heavily each channel is discounting.
+    Do not confuse with discount_rate, which is discounts as a share of gross revenue.
+  value_format_name: percent_1
+  sql: >-
+    COUNT(DISTINCT CASE WHEN ${order_total_discount} > 5 THEN ${order_id} END)
+    / NULLIF(COUNT(DISTINCT ${order_id}), 0)
+  synonyms:
+  - Bargain Order Rate
+  - Bargain %
+  - Share of Discounted Orders
+
 - name: discount_rate
   field_type: measure
   type: number
