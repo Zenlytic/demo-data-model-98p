@@ -25,6 +25,11 @@ relationships:
   relationship: one_to_many
   join_type: left_outer
   sql_on: ${customers.customer_id} = ${order_lines.customer_id}
+- from_table: products
+  join_table: order_lines
+  relationship: one_to_many
+  join_type: left_outer
+  sql_on: ${products.product_id} = ${order_lines.product_id}
 - from_table: ltv
   join_table: customers
   relationship: many_to_one
