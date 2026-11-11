@@ -36,6 +36,13 @@ fields:
   sql: ${TABLE}.CUSTOMER_ID
   searchable: false
 
+- name: order_number
+  field_type: dimension
+  type: number
+  description: The order number assigned to the order.
+  sql: ${TABLE}.ORDER_NUMBER
+  searchable: false
+
 - name: order_id
   field_type: dimension
   type: string
