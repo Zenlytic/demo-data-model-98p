@@ -16,6 +16,14 @@ fields:
   - customer
   searchable: false
 
+- name: event_id
+  field_type: dimension
+  type: string
+  hidden: true
+  description: Unique identifier for the event.
+  sql: ${TABLE}.EVENT_ID
+  searchable: false
+
 - name: click_id
   field_type: dimension
   type: string

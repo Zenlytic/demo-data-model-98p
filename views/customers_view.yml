@@ -118,6 +118,13 @@ fields:
   sql: ${TABLE}.first_campaign
   searchable: false
 
+- name: first_product_id
+  field_type: dimension
+  type: string
+  description: The id of the first product the customer purchased.
+  sql: ${TABLE}.FIRST_PRODUCT_ID
+  searchable: false
+
 - name: first_order
   field_type: dimension_group
   type: time

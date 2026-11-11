@@ -1,0 +1,12 @@
+type: topic
+label: LTV
+base_view: ltv
+model_name: pure_organics
+description: >-
+  Monthly customer lifetime value snapshot showing customers, orders,
+  cumulative orders and gross sales by customer and month.
+zoe_description: >-
+  Use this to analyze customer lifetime value over time: new customers and
+  orders per month, cumulative orders per customer and gross sales by month.
+hidden: false
+views: {}
