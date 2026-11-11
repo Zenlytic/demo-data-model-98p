@@ -9,7 +9,6 @@ zoe_description: One row per product. Reach it through order_lines (many_to_one 
   product_id) to analyze orders, revenue or margin by product_title or product_type.
   count_products counts products in the catalog.
 sql_table_name: DEMO_PROD.PRODUCTS
-default_date: order_lines.order
 fields:
 - name: product_id
   field_type: dimension
