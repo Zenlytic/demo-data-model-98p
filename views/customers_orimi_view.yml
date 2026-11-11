@@ -1,19 +1,16 @@
 version: 1
 type: view
 name: customers_orimi
-description: >-
-  Customer attributes from the CUSTOMERS_ORIMI table in the Pure Organics
-  semantic view. It has the same columns as the customers view (name, email,
-  address, location, marketing opt-in and first-touch attribution) and is
-  modeled separately.
 model_name: pure_organics
+description: Copy of the customers table (DEMO_PROD.CUSTOMERS_ORIMI) that is part
+  of the Pure Organics semantic view. Same columns and same 4,041 customers as the
+  customers view.
+zoe_description: Duplicate of the customers view (identical rows and values). Do NOT
+  use unless the user explicitly asks for customers_orimi; use customers instead.
+  It has no joins to other views.
 sql_table_name: DEMO_PROD.CUSTOMERS_ORIMI
 default_date: first_order
 row_label: Customer
-identifiers:
-- name: customer_id
-  type: primary
-  sql: ${customer_id}
 fields:
 - name: customer_id
   field_type: dimension

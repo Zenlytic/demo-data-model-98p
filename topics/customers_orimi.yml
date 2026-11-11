@@ -1,8 +1,0 @@
-type: topic
-label: Customers Orimi
-base_view: customers_orimi
-model_name: pure_organics
-description: Customer data from the CUSTOMERS_ORIMI table in the Pure Organics semantic view.
-zoe_description: Customer data from the CUSTOMERS_ORIMI table.
-hidden: false
-views: {}

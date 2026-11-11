@@ -1,8 +1,16 @@
 version: 1
 type: view
 name: marketing_spend
-description: A view for marketing spend.
 model_name: pure_organics
+description: Paid marketing spend by channel, source and campaign (DEMO_PROD.MARKETING_SPEND),
+  with the revenue, gross profit and customers attributed to paid marketing. Supports
+  total spend, CAC, ROAS and PROAS analysis to evaluate campaign efficiency.
+zoe_description: 'Use for marketing efficiency: total_marketing_spend, cac (spend
+  per paid customer), roas (paid revenue / spend) and proas (paid gross profit / spend).
+  Does not join to other views: for spend vs. order results, query marketing_spend
+  and order_lines separately by channel/source/campaign (see the marketing_channel,
+  marketing_source and campaign mappings) and combine after aggregation. cpc is hidden
+  because it divides by a hardcoded click count; there is no click data in the source.'
 sql_table_name: DEMO_PROD.MARKETING_SPEND
 default_date: spend
 row_label: Spend Item
@@ -134,6 +142,7 @@ fields:
 
 - name: cpc
   field_type: measure
+  hidden: true
   type: number
   label: CPC
   description: >-

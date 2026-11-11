@@ -1,18 +1,22 @@
 version: 1
 type: view
 name: order_lines
-description: Description of order_lines view.
 model_name: pure_organics
+description: 'Order line items (DEMO_PROD.ORDER_LINES) with the marketing influences
+  and revenue outcomes behind each order: campaign, promotion, marketing channel/source,
+  first and last click, subscription vs. one-time purchase, and new vs. repeat. Core
+  view for revenue, margin, discount, order and repurchase analysis.'
+zoe_description: 'Grain is one row per order line, so count orders with number_of_orders
+  (distinct order_id), never row counts. Revenue metrics: total_gross_revenue, total_discounts,
+  total_net_revenue (gross - discounts), gross_profit (net - COGS), gross_aov, discount_rate,
+  repurchase_rate. subscription_vs_otp splits subscription from one-time purchases;
+  new_vs_repeat splits first orders from repeat orders. Joins: many_to_one to products
+  (product_id) and to customers (customer_id); no fan-out when grouping by product
+  or customer attributes. For customer
+  lifetime value use the ltv view.'
 sql_table_name: DEMO_PROD.ORDER_LINES
 default_date: order
 row_label: Order line
-identifiers:
-- name: product_id
-  type: foreign
-  sql: ${product_id}
-- name: customer_id
-  type: foreign
-  sql: ${customer_id}
 fields:
 - name: order_line_id
   field_type: dimension
@@ -23,6 +27,7 @@ fields:
   tiers:
   sql: ${TABLE}.ORDER_LINE_ID
   synonyms: []
+  searchable: false
 - name: customer_id
   field_type: dimension
   type: string
@@ -71,24 +76,28 @@ fields:
   type: number
   hidden: true
   sql: ${TABLE}.DISCOUNT
+  searchable: false
 
 - name: revenue
   field_type: dimension
   type: number
   hidden: true
   sql: ${TABLE}.REVENUE
+  searchable: false
 
 - name: price
   field_type: dimension
   type: number
   hidden: true
   sql: ${TABLE}.PRICE
+  searchable: false
 
 - name: quantity
   field_type: dimension
   type: number
   hidden: true
   sql: ${TABLE}.QUANTITY
+  searchable: false
 
 - name: campaign
   field_type: dimension
@@ -172,6 +181,7 @@ fields:
   hidden: true
   sql: dense_rank() over (partition by ${customer_id} order by ${order_date} asc)
   window: true
+  searchable: false
 
 - name: order_total_discount
   field_type: dimension
@@ -182,6 +192,7 @@ fields:
     (order-level discount, summed across every line on that order).
   sql: SUM(${TABLE}.DISCOUNT) OVER (PARTITION BY ${TABLE}.ORDER_ID)
   window: true
+  searchable: false
 
 - name: is_bargain_order
   field_type: dimension

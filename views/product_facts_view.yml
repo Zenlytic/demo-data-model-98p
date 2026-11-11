@@ -2,6 +2,11 @@ version: 1
 type: view
 name: product_facts
 model_name: pure_organics
+description: Order counts, units and COGS by product (derived table; demonstrates
+  how a derived table works).
+zoe_description: Duplicate of order_facts and not part of the Snowflake semantic view.
+  Hidden; use order_lines joined to products.
+hidden: true
 default_date: order
 derived_table:
   sql: >
@@ -16,10 +21,6 @@ derived_table:
     order_lines.order_at
             ,products.product_title
             ,products.product_type
-identifiers:
-- name: primkey
-  type: primary
-  sql: ${primkey}
 fields:
 - name: primkey
   field_type: dimension

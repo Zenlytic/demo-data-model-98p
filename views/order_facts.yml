@@ -2,6 +2,11 @@ version: 1
 type: view
 name: order_facts
 model_name: pure_organics
+description: Order counts, units and COGS rolled up by order time, product title and
+  product type (derived table).
+zoe_description: Pre-aggregated derived table built from order_lines and products.
+  Not part of the Snowflake semantic view. For revenue, margin or any metric beyond
+  orders/units/COGS, use order_lines joined to products instead.
 default_date: order
 derived_table:
   sql: >
@@ -14,10 +19,6 @@ derived_table:
     from DEMO_PROD.ORDER_LINES order_lines  left join DEMO_PROD.PRODUCTS
     products on order_lines.product_id = products.product_id  group by
     order_lines.order_at, products.product_title, products.product_type
-identifiers:
-- name: primkey
-  type: primary
-  sql: ${primkey}
 fields:
 - name: primkey
   field_type: dimension
@@ -73,27 +74,3 @@ fields:
   field_type: measure
   type: sum
   sql: ${TABLE}.total_cogs
-
-- name: ywuuqbnwwufratcmzdatbrajnnmtzbkeylvpdnbl
-  field_type: measure
-  type: sum
-  label: Duplicate Number Of Orders
-  sql: ${TABLE}.number_of_orders
-  canon_date: order_facts.order
-  update_where_timeframe: true
-
-- name: atggfsvlzimivwiehgcyosyugbrsnldxzmmroler
-  field_type: measure
-  type: sum
-  label: Duplicate Number Of Units
-  sql: ${TABLE}.number_of_units
-  canon_date: order_facts.order
-  update_where_timeframe: true
-
-- name: uqmqdsktzhurbjjcyfvcmyfxgvapigxydalyzcdd
-  field_type: measure
-  type: sum
-  label: Duplicate Number Of Orders
-  sql: ${TABLE}.number_of_orders
-  canon_date: order_facts.order
-  update_where_timeframe: true

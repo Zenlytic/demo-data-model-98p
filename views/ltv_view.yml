@@ -1,20 +1,26 @@
 version: 1
 type: view
 name: ltv
-description: >-
-  Monthly customer lifetime value (LTV) snapshot for Pure Organics. Each row
-  captures a customer's activity in a given month, including the number of
-  customers and orders in the month, cumulative orders to date and gross sales.
-  Use it to analyze customer lifetime value, order cadence and loyalty over
-  time.
+description: Customer lifetime value (LTV) snapshot by customer and month (DEMO_PROD.LTV).
+  Each row is one customer in one month, starting with the month of their first order
+  and continuing every month through the end of the data. It shows whether the customer
+  ordered that month, the orders they placed that month, and their cumulative orders
+  and gross sales to date. Use it to analyze customer lifetime value, order cadence
+  and loyalty over time.
+zoe_description: 'Panel table: one row per customer per month from first order onward
+  (about 43k rows, 3,647 customers, Nov 2024 - Dec 2025). CUMULATIVE columns (gross_sales,
+  n_cumulative_orders) are running totals per customer, so NEVER sum them across months:
+  group by activity_month or filter to a single month (e.g. the latest month for current
+  LTV). Per-month columns (n_orders_in_month, n_customers_in_month) are additive across
+  months. n_customers_in_month is a 0/1 flag meaning the customer ordered that month
+  (active customer), not new customers, despite the source comment. gross_sales equals
+  cumulative order_lines revenue per customer. Joins many_to_one to customers on customer_id.
+  Do not join to order_lines (grain mismatch). Use avg_ltv_per_customer for average
+  LTV and active_customers for monthly active buyers.'
 model_name: pure_organics
 sql_table_name: DEMO_PROD.LTV
 default_date: activity
-row_label: Customer Month
-identifiers:
-- name: ltv_key
-  type: primary
-  sql: ${ltv_key}
+row_label: Customer month
 fields:
 - name: ltv_key
   field_type: dimension
@@ -28,9 +34,13 @@ fields:
 - name: customer_id
   field_type: dimension
   type: string
-  description: >-
-    Unique identifier for a customer in the database, used to track and analyze
-    individual customer behavior and transactions.
+  description: Unique identifier for a customer, used to track individual customer
+    behavior and transactions.
+  synonyms:
+  - customer_number
+  - client_id
+  - user_id
+  - account_id
   sql: ${TABLE}.CUSTOMER_ID
   searchable: false
 
@@ -38,7 +48,8 @@ fields:
   field_type: dimension
   type: number
   hidden: true
-  description: The number of new customers acquired by the company in a given month.
+  description: 1 if the customer placed at least one order in the month, otherwise
+    0.
   sql: ${TABLE}.N_CUSTOMERS_IN_MONTH
   searchable: false
 
@@ -46,16 +57,21 @@ fields:
   field_type: dimension
   type: number
   hidden: true
-  description: The number of orders a customer places within a month.
+  description: Number of orders the customer placed within the month.
   sql: ${TABLE}.N_ORDERS_IN_MONTH
   searchable: false
 
 - name: n_cumulative_orders
   field_type: dimension
   type: number
-  description: >-
-    The total number of orders a customer has placed up to a certain point in
-    time, used to measure customer loyalty and purchasing behavior over time.
+  description: Total orders the customer has placed up to and including this month
+    (running total per customer).
+  zoe_description: Cumulative per customer. Do not sum across months; filter to one
+    month or group by month.
+  synonyms:
+  - lifetime_orders
+  - cumulative_order_count
+  - total_orders_to_date
   sql: ${TABLE}.N_CUMULATIVE_ORDERS
   searchable: false
 
@@ -63,9 +79,8 @@ fields:
   field_type: dimension
   type: number
   hidden: true
-  description: >-
-    The total revenue generated from sales before any deductions or
-    adjustments, representing the initial amount received from customers.
+  description: Cumulative gross sales (before discounts) the customer has generated
+    up to and including this month.
   sql: ${TABLE}.GROSS_SALES
   searchable: false
 
@@ -74,9 +89,10 @@ fields:
   type: time
   datatype: date
   label: Month
-  description: >-
-    The month in which a customer's activity is being measured, allowing for
-    analysis of customer lifetime value over time (source column DATE_MONTH).
+  description: The month a customer's activity is measured (source column DATE_MONTH).
+  synonyms:
+  - reporting_month
+  - calendar_month
   timeframes:
   - raw
   - date
@@ -85,26 +101,63 @@ fields:
   - year
   sql: ${TABLE}.DATE_MONTH
 
-- name: total_customers_in_month
-  field_type: measure
-  type: sum
-  description: Total number of new customers acquired in the selected months.
-  sql: ${n_customers_in_month}
-
 - name: total_orders_in_month
   field_type: measure
   type: sum
-  description: Total number of orders placed in the selected months.
+  label: Orders in month
+  description: Orders placed in the selected months (additive across months).
+  synonyms:
+  - monthly_orders
+  - orders_per_month
   sql: ${n_orders_in_month}
 
-- name: total_gross_sales
+- name: active_customers
   field_type: measure
   type: sum
-  description: Total gross sales (before deductions or adjustments) in the selected months.
-  sql: ${gross_sales}
+  label: Active customers (ordered in month)
+  description: Customers who placed at least one order in the month. Summing across
+    several months counts a customer once per active month.
+  synonyms:
+  - monthly_active_customers
+  - customers_per_month
+  sql: ${n_customers_in_month}
 
 - name: count_customers
   field_type: measure
   type: count_distinct
-  description: Number of distinct customers with activity in the selected months.
+  label: Customers tracked
+  description: Distinct customers present in the selected months, including those
+    who did not order that month.
   sql: ${customer_id}
+
+- name: total_cumulative_gross_sales
+  field_type: measure
+  type: sum
+  label: Cumulative gross sales (single month)
+  description: Sum of customers' cumulative gross sales. Valid for one month or grouped
+    by month; never across months.
+  sql: ${gross_sales}
+
+- name: avg_ltv_per_customer
+  field_type: measure
+  type: number
+  label: Average LTV per customer
+  value_format_name: usd
+  description: Average cumulative gross sales per customer as of the month. Group
+    by month or filter to one month.
+  zoe_description: Cumulative-to-date LTV. For current LTV filter to the latest month;
+    for the trend group by month.
+  synonyms:
+  - ltv
+  - customer_lifetime_value
+  - average_customer_value
+  sql: SUM(${gross_sales}) / NULLIF(COUNT(DISTINCT ${customer_id}), 0)
+
+- name: avg_orders_per_customer_to_date
+  field_type: measure
+  type: number
+  label: Average orders per customer to date
+  value_format_name: decimal_2
+  description: Average cumulative orders per customer as of the month. Group by month
+    or filter to one month.
+  sql: SUM(${n_cumulative_orders}) / NULLIF(COUNT(DISTINCT ${customer_id}), 0)

@@ -22,3 +22,15 @@ When a user asks which products (or other segments) had the biggest YoY drop, de
 4. Is the discount spend worth it? Compare margin and repeat rate for promoted orders against orders with no promotion.
 
 Offer these as a short list and ask which the user wants to run next. Do not run them unprompted.
+
+## Pure Organics Data Model Map
+
+The model mirrors the Snowflake semantic view `DEMO.DEMO_PROD.PURE_ORGANICS`. Pick the view by question:
+
+- Revenue, margin, discounts, orders, repurchase, subscription vs. one-time, new vs. repeat: `order_lines` (join to `products` and `customers`).
+- Customer attributes and first-touch attribution: `customers`.
+- Customer lifetime value (cumulative, per customer-month): `ltv` (load the `customer-ltv-analysis` skill).
+- Paid spend, CAC, ROAS, PROAS: `marketing_spend`. It does not join to other views, so combine with order data after aggregating each.
+- Site traffic, sessions, funnel conversion: `events`.
+- `customers_orimi`, `order_facts` and `product_facts` are duplicates or derived roll-ups; do not use them unless explicitly asked.
+
