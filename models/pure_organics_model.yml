@@ -9,4 +9,7 @@ access_grants:
   allowed_values:
   - Executive
   - Finance
-
+- name: pii_executive_access
+  user_attribute: department
+  allowed_values:
+  - Executive

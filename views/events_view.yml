@@ -94,6 +94,8 @@ fields:
 
 - name: ip_address
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   label: IP address
   description: The user's IP address

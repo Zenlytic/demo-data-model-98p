@@ -44,33 +44,41 @@ fields:
 
 - name: email
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   description: The customer's email address
-  required_access_grants:
-  - pii_access
   sql: ${TABLE}.EMAIL
   searchable: false
 
 - name: first_name
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   sql: ${TABLE}.FIRST_NAME
   searchable: false
 
 - name: last_name
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   sql: ${TABLE}.LAST_NAME
   searchable: false
 
 - name: full_name
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   sql: concat(${first_name}, ${last_name})
   searchable: false
 
 - name: address
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   description: The customer's address (shipping)
   sql: ${TABLE}.ADDRESS
@@ -92,6 +100,8 @@ fields:
 
 - name: zipcode
   field_type: dimension
+  required_access_grants:
+  - pii_executive_access
   type: string
   description: The customer's zip code
   sql: ${TABLE}.ZIPCODE
